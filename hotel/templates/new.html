@@ -1,7 +1,108 @@
 {% extends 'basic.html' %}
-{% block title %}About
-{% endblock title %}
+{% load static %}
+
+{% block title %}Room Details{% endblock title %}
+
 {% block body %}
-<h1 class="text-center text-success"> About </h1>
+
+<div class="container py-5">
+
+  <div class="row g-4 align-items-stretch">
+
+    <!-- LEFT: IMAGE -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow rounded-3 overflow-hidden h-100">
+
+        {% if room.image %}
+        <img src="{{ room.image.url }}"
+             class="w-100"
+             style="height:300px; object-fit:cover;">
+        {% else %}
+        <img src="{% static 'images/hotel.avif' %}"
+             class="w-100"
+             style="height:300px; object-fit:cover;">
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- RIGHT: DETAILS -->
+    <div class="col-md-6">
+      <div class="card border-0 shadow rounded-3 p-4 h-100 d-flex flex-column">
+
+        <!-- Room Type -->
+        <h3 class="fw-bold  mb-1" style="color:#112166;">
+          {{ room.get_room_type_display }}
+        </h3>
+
+        <!-- Hotel Name -->
+        <h5 class="fw-semibold text-dark mb-0">
+          {{ room.hotel.name }}
+        </h5>
+
+        <!-- Location -->
+        <p class="text-muted mb-3">
+          📍 {{ room.hotel.location }}
+        </p>
+
+        <!-- Small Divider -->
+        <hr class="my-2">
+
+        <!-- Info Row -->
+        <div class="row text-center mb-3">
+
+          <div class="col-6">
+            <div class="border rounded p-2">
+              <small class="text-muted d-block">Room No</small>
+              <strong>{{ room.room_number }}</strong>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="border rounded p-2">
+              <small class="text-muted d-block">Capacity</small>
+              <strong>{{ room.capacity }} Persons</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Description -->
+        {% if room.description %}
+        <p class="text-muted small">
+          {{ room.description }}
+        </p>
+        {% endif %}
+
+        <!-- Price -->
+        <div class="mt-auto">
+
+          <h3 class="text-success fw-bold mb-3">
+            ₹ {{ room.price }}
+          </h3>
+
+          <!-- Buttons -->
+          <div class="d-grid gap-2">
+
+            <a href="{% url 'bookroompage' %}?roomid={{ room.id }}"
+               class="btn btn-primary">
+              Book Now
+            </a>
+
+            <a href="/"
+               class="btn btn-outline-secondary">
+              Back to Rooms
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
 
 {% endblock body %}

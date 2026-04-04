@@ -1,30 +1,80 @@
 {% extends 'basic.html' %}
-{% block title %}All Bookings
-{% endblock title %}
+{% block title %}All Bookings{% endblock title %}
+
 {% block body %}
-<h3 class="text-center  text-success">All Bookings </h3>
-<table class="table">
-    <thead>
+
+<div class="container py-4">
+
+  <h3 class="text-center text-success mb-4">All Bookings</h3>
+
+  <table class="table table-bordered table-hover">
+
+    <thead class="table-light text-center">
+      <tr>
         <th>User</th>
+        <th>Hotel</th>
         <th>Room</th>
         <th>Location</th>
-        <th>Person</th>
-        <th>Check in</th>
-        <th>Check out</th>
+        <th>Persons</th>
+        <th>Check In</th>
+        <th>Check Out</th>
         <th>Price</th>
+      </tr>
     </thead>
-    {% for each_booking in bookings %}
-    <tr>
-        <td>{{each_booking.guest.username}}</td>
-        <td>{{each_booking.room.roomnumber}}</td>
-        <td>{{each_booking.room.hotel.location}}</td>
-        <td>{{each_booking.room.capacity}}</td>
-        <td>{{each_booking.check_in}}</td>
-        <td>{{each_booking.check_out}}</td>
-        <td>{{each_booking.room.price}}</td>
-    </tr>
-    {% endfor %}
 
+    <tbody>
+      {% for each_booking in bookings %}
+      <tr class="text-center">
 
-</table>
+        <!-- User -->
+        <td>
+          {{ each_booking.guest.username }}
+        </td>
+
+        <!-- Hotel Name -->
+        <td class="fw-semibold">
+          {{ each_booking.room.hotel.name }}
+        </td>
+
+        <!-- Room Type + Number -->
+        <td>
+          {{ each_booking.room.get_room_type_display }}
+          <br>
+          <small class="text-muted">
+            Room No: {{ each_booking.room.room_number }}
+          </small>
+        </td>
+
+        <!-- Location -->
+        <td>
+          {{ each_booking.room.hotel.location }}
+        </td>
+
+        <!-- Capacity -->
+        <td>
+          {{ each_booking.room.capacity }}
+        </td>
+
+        <!-- Dates -->
+        <td>
+          {{ each_booking.check_in }}
+        </td>
+
+        <td>
+          {{ each_booking.check_out }}
+        </td>
+
+        <!-- Price -->
+        <td class="text-success fw-bold">
+          ₹ {{ each_booking.room.price }}
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+
+</div>
+
 {% endblock body %}

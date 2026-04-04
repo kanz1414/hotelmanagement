@@ -23,48 +23,22 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.homepage,name="homepage"),
-    path('home', views.homepage,name="homepage"),
-    # path('about', views.aboutpage,name="aboutpage"),
-    
-    path('newv', views.newview,name="newview"),
-
+    path('room_details/<int:id>', views.room_details, name='room_details'),
     path('contact', views.contactpage,name="contactpage"),
-    path('user', views.user_log_sign_page,name="userloginpage"),
-    path('user/login', views.user_log_sign_page,name="userloginpage"),
-    path('user/bookings', views.user_bookings,name="dashboard"),
-    path('user/book-room', views.book_room_page,name="bookroompage"),
-    path('user/book-room/book', views.book_room,name="bookroom"),
+    path('login', views.user_login,name="userloginpage"),
     path('user/signup', views.user_sign_up,name="usersignup"),
-    path('staff/', views.staff_log_sign_page,name="staffloginpage"),
-    path('staff/login', views.staff_log_sign_page,name="staffloginpage"),
-    path('staff/signup', views.staff_sign_up,name="staffsignup"),
-
+    path('bookings', views.user_bookings,name="dashboard"),
+    path('book-room', views.book_room_page,name="bookroompage"),
+    path('user/book-room/book', views.book_room,name="bookroom"),
     # Logout
-    path('lg', views.log,name="lg"),
-    
-    path('staff/panel', views.panel,name="staffpanel"),
-    path('staff/allbookings', views.all_bookings,name="allbookigs"),
-    
-    path('staff/panel/add-new-location', views.add_new_location,name="addnewlocation"),
-    path('staff/panel/edit-room', views.edit_room),
-    path('staff/panel/add-new-room', views.add_new_room,name="addroom"),
-    path('staff/panel/edit-room/edit', views.edit_room),
-    path('staff/panel/view-room', views.view_room),
-
-    
+    path('logout', views.logout_page,name="logout"),
     # Change Password 
     path('changepassword', views.change_password, name ="change_password"),
-    
-    # Forget Password  : By Email
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html'), name="password_reset"),
 
-    path('password_reset/done', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name="password_reset_done"),
-    
-    path("password-reset-confirm/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name="password_reset_confirm"),
-
-    
-    path("password-reset-complete/<uidb64>/<token>/", auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name="password_reset_complete"),
 
     path('admin/', admin.site.urls),
+    path('staff/', include('app.urls'))
     
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
