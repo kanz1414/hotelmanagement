@@ -13,3 +13,4 @@
 [![Watch the video](https://user-images.githubusercontent.com/105594748/230765853-83591a39-4bd4-4c1b-8303-f1b37b9db30c.png)](https://github.com/Sandip-Kanzariya/Hotel-Management-System-Django-Project/issues/1#issue-1659812432)
 
 
+"# hotelmngmnt-for-internship" 
