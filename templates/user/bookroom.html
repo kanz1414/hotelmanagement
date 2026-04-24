@@ -1,51 +1,105 @@
-{% extends 'basic.html' %} {% block title %}Book Room {% endblock title %} {% block body %}
-<div class="container">
+{% extends 'basic.html' %}
+{% block title %}Book Room{% endblock title %}
 
-    <div class="row">
-        <div class="col-md-6 col-lg-6 col-xlg-6 col-sm-12 mx-auto my-4 ">
+{% block body %}
 
-           <form action="{% url 'book_room' %}" method="POST">
-                {%csrf_token%}
-                {%load app_tags%}
-                <div class="form-group">
-                    <label for="username">Hotel:</label>
-                    <input type="text" class="form-control " id="hotel" name="hotel" disabled value={{room.hotel.name}}>
-                </div>
-                <div class="form-group">
-                    <label for="username">Location:</label>
-                    <input type="text" class="form-control " id="location" name="location" disabled value={{room.hotel.location}}>
-                </div>
-                <div class="form-group">
-                    <label for="person">username:</label>
-                    <input type="text" class="form-control " id="username" name="username" required="true" value={{request.user}}>
-                </div>
-                <div class="form-group">
-                    <label for="person">Person:</label>
-                    <input type="number" class="form-control " id="person" name="person" min="1" max={{room.capacity}} required="true" value={{room.capacity}}>
-                </div>
-                <div class="form-group">
-                    <label for="password2">Check-in:</label>
-                    <input type="date" class="form-control " id="cin" min={%todays_date%} max={% max_date %} placeholder="check in " name="check_in" required="True">
-                </div>
-                <div class="form-group">
-                    <label for="password2">Check-Out:</label>
-                    <input type="date" class="form-control " id="cout" min={%tommorow%} max={% max_date%} placeholder="check out " name="check_out" required="True">
-                </div>
-                <div class="form-group">
-                    <label for="username">Room Type:</label>
-                    <input type="text" class="form-control " id="roomtype" name="roomtype" disabled value={{room.get_room_type_display}}>
-                </div>
-                <div class="form-group">
-                    <label for="password2">Price:</label>
-                    <input type="number" class="form-control " id="price" placeholder="price " name="price" disabled value={{room.price}}>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0">🏨 Book Your Room</h4>
                 </div>
 
+                <div class="card-body p-4">
 
-                <button type="submit" class="btn btn-primary">Book Now</button>
-                <input type="hidden" name="room_id" value={{room.id}}>
+                    <form action="{% url 'book_room' %}" method="POST">
+                        {% csrf_token %}
+                        {% load app_tags %}
 
-            </form>
+                        <!-- Hotel Details -->
+                        <h5 class="mb-3 text-primary">Hotel Details</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hotel Name</label>
+                                <input type="text" class="form-control" value="{{room.hotel.name}}" disabled>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" value="{{room.hotel.location}}" disabled>
+                            </div>
+                        </div>
+
+                        <!-- User Info -->
+                        <h5 class="mb-3 text-primary">User Information</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" value="{{request.user}}" readonly>
+                        </div>
+
+                        <!-- Booking Info -->
+                        <h5 class="mb-3 text-primary">Booking Details</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Number of Persons</label>
+                                <input type="number" class="form-control" name="person"
+                                       min="1" max="{{room.capacity}}" value="1" required>
+                                <small class="text-muted">Max: {{room.capacity}}</small>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Room Type</label>
+                                <input type="text" class="form-control" value="{{room.get_room_type_display}}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Check-In Date</label>
+                                <input type="date" class="form-control"
+                                       name="check_in"
+                                       min="{% todays_date %}"
+                                       max="{% max_date %}"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Check-Out Date</label>
+                                <input type="date" class="form-control"
+                                       name="check_out"
+                                       min="{% tommorow %}"
+                                       max="{% max_date %}"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Price (per night)</label>
+                            <input type="number" class="form-control" value="{{room.price}}" disabled>
+                        </div>
+
+                        <!-- Hidden Field -->
+                        <input type="hidden" name="room_id" value="{{room.id}}">
+
+                        <!-- Button -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill">
+                                ✅ Confirm Booking
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
 {% endblock body %}

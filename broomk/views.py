@@ -103,7 +103,7 @@ def logout_page(request):
 
 def room_details(request, id):
     room = get_object_or_404(Rooms, id=id)
-    return render(request, 'room_details.html', {'room': room})
+    return render(request, 'staff/viewroom.html', {'room': room})
 
 
 @login_required(login_url='/login/')

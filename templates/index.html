@@ -94,7 +94,7 @@
   <div class="card h-100 shadow-sm border">
 
     <!-- Image -->
-    <a href="{% url 'viewroom' r.id %}">
+    <a href="{% url 'room_details' r.id %}">
       {% if r.image %}
       <img src="{{ r.image.url }}"
            class="card-img-top"
