@@ -1,0 +1,32 @@
+{% extends 'basic.html' %}
+{% block title %}Booking Confirmed{% endblock %}
+
+{% block body %}
+
+<div class="text-center">
+
+    <h2 class="text-success mb-3">🎉 Booking Confirmed!</h2>
+
+    <div class="card shadow p-4">
+
+        <h4>Booking Details</h4>
+        <hr>
+
+        <p><strong>User:</strong> {{ booking.guest }}</p>
+        <p><strong>Hotel:</strong> {{ booking.room.hotel.name }}</p>
+        <p><strong>Location:</strong> {{ booking.room.hotel.location }}</p>
+        <p><strong>Room:</strong> {{ booking.room }}</p>
+        <p><strong>Check-in:</strong> {{ booking.check_in }}</p>
+        <p><strong>Check-out:</strong> {{ booking.check_out }}</p>
+        <p><strong>Price:</strong> ₹{{ booking.room.price }}</p>
+
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary">Go Home</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-success">My Bookings</a>
+    </div>
+
+</div>
+
+{% endblock %}

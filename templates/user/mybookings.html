@@ -1,0 +1,74 @@
+{% extends 'basic.html' %}
+{% block title %}Dashboard {% endblock title %}
+{% block body %}
+{% load app_tags %}
+
+<div class="container py-4">
+
+  <h3 class="text-center text-success mb-4">My Bookings</h3>
+
+  <table class="table table-bordered table-hover">
+
+    <thead class="table-light text-center">
+      <tr>
+        <th>Hotel</th>
+        <th>Room</th>
+        <th>Location</th>
+        <th>Persons</th>
+        <th>Check In</th>
+        <th>Check Out</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for each_booking in bookings %}
+      <tr class="text-center">
+
+        <!-- Hotel Name -->
+        <td class="fw-semibold">
+          {{ each_booking.room.hotel.name }}
+        </td>
+
+        <!-- Room Type + Number -->
+        <td>
+          {{ each_booking.room.get_room_type_display }}
+          <br>
+          <small class="text-muted">
+            Room No: {{ each_booking.room.room_number }}
+          </small>
+        </td>
+
+        <!-- Location -->
+        <td>
+          {{ each_booking.room.hotel.location }}
+        </td>
+
+        <!-- Capacity -->
+        <td>
+          {{ each_booking.room.capacity }}
+        </td>
+
+        <!-- Dates -->
+        <td>
+          {{ each_booking.check_in }}
+        </td>
+
+        <td>
+          {{ each_booking.check_out }}
+        </td>
+
+        <!-- Price -->
+        <td class="text-success fw-bold">
+          ₹ {{ each_booking.room.price }}
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+
+</div>
+
+{% endblock body %}

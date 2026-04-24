@@ -1,0 +1,99 @@
+{% extends 'basic.html' %}
+
+{% block title %}Contact{% endblock title %}
+
+{% block body %}
+
+<style>
+.contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+.contact-card {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    color: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+}
+
+.contact-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.contact-item:hover {
+    transform: translateX(8px);
+}
+
+.contact-icon {
+    font-size: 24px;
+    width: 40px;
+}
+
+.contact-text {
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+.contact-link {
+    color: white;
+    text-decoration: none;
+}
+
+.contact-link:hover {
+    text-decoration: underline;
+}
+</style>
+
+<h2 class="text-center text-primary mt-4">📞 Contact Us</h2>
+
+<div class="contact-container">
+
+    <div class="contact-card">
+
+        <h4 class="contact-title">CONTACT DETAILS</h4>
+
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt contact-icon text-danger"></i>
+            <div class="contact-text">Kasaragod, Kerala</div>
+        </div>
+
+        <div class="contact-item">
+            <i class="fas fa-envelope contact-icon"></i>
+            <div class="contact-text">bcawebdevelopment@gmail.com</div>
+        </div>
+
+        <div class="contact-item">
+            <i class="fas fa-clock contact-icon text-warning"></i>
+            <div class="contact-text">10 AM - 5 PM</div>
+        </div>
+
+        <div class="contact-item">
+            <i class="fab fa-linkedin contact-icon text-info"></i>
+            <a href="https://www.linkedin.com/" target="_blank" class="contact-text contact-link">
+                LinkedIn Profile
+            </a>
+        </div>
+
+        <div class="contact-item">
+            <i class="fab fa-twitter contact-icon text-primary"></i>
+            <a href="https://twitter.com/" target="_blank" class="contact-text contact-link">
+                Twitter Profile
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock body %}

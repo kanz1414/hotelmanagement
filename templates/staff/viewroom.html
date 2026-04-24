@@ -1,0 +1,114 @@
+{% extends 'basic.html' %}
+
+{% block title %}Room Details{% endblock title %}
+
+{% block body %}
+
+<div class="container my-4">
+
+    <!-- 📸 IMAGE -->
+    <div class="card mb-4 text-center shadow-sm">
+        <div class="card-body">
+            {% if room.image %}
+                <img src="{{ room.image.url }}" class="img-fluid rounded" style="max-height:300px; object-fit:cover;">
+            {% else %}
+                <p class="text-muted">No image available</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 🏨 + 🛏️ DETAILS -->
+    <div class="row g-4">
+
+        <!-- HOTEL DETAILS -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">🏨 Hotel Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ room.hotel.name }}</p>
+                    <p><strong>Owner:</strong> {{ room.hotel.owner }}</p>
+                    <p><strong>City:</strong> {{ room.hotel.location|capfirst }}</p>
+                    <p><strong>State:</strong> {{ room.hotel.state|capfirst }}</p>
+                    <p><strong>Country:</strong> {{ room.hotel.country|capfirst }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROOM DETAILS -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🛏️ Room Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Room No:</strong> {{ room.room_number }}</p>
+                    <p><strong>Type:</strong> {{ room.get_room_type_display }}</p>
+                    <p><strong>Capacity:</strong> {{ room.capacity }} person</p>
+                    <p><strong>Size:</strong> {{ room.size }} ft</p>
+                    <p><strong>Price:</strong> ₹{{ room.price }}</p>
+
+                    <p><strong>Status:</strong>
+                        {% if room.status == "available" %}
+                            <span class="badge bg-success">Available</span>
+                        {% else %}
+                            <span class="badge bg-danger">Not Available</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 📅 BOOKINGS -->
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">📅 Bookings</h5>
+        </div>
+
+        <div class="card-body">
+
+            {% if reservations %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>User</th>
+                            <th>Persons</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for each_detail in reservations %}
+                        <tr>
+                            <td>{{ each_detail.guest.username }}</td>
+                            <td>{{ each_detail.person }}</td>
+                            <td>{{ each_detail.check_in }}</td>
+                            <td>{{ each_detail.check_out }}</td>
+                        </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td colspan="4">
+                                <strong>Total Bookings: {{ reservations|length }}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            {% else %}
+                <p class="text-muted text-center">No bookings found for this room.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock body %}

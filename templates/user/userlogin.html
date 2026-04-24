@@ -1,0 +1,100 @@
+{% extends 'basic.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <section>
+        <div class="card w-50 mx-auto shadow">
+
+            <!-- Tabs -->
+            <div class="card-header bg-light">
+                <ul class="nav nav-tabs justify-content-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#login">Login</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#signup">Signup</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="card-body">
+
+                <!-- Django Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="tab-content">
+
+                    <!-- LOGIN -->
+                    <div id="login" class="tab-pane fade show active">
+
+                        <p class="text-center">User Login Form</p>
+
+                        <form action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label>Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="Enter username">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password" placeholder="Enter password">
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">Remember me</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
+
+                    </div>
+
+                    <!-- SIGNUP -->
+                    <div id="signup" class="tab-pane fade">
+
+                        <p class="text-center">User Signup Form</p>
+
+                        <form action="{% url 'signup' %}" method="post">
+                            {% csrf_token %}
+
+                            <input type="text" class="form-control mb-2" name="username" placeholder="Username">
+
+                            <input type="text" class="form-control mb-2" name="first_name" placeholder="First Name">
+
+                            <input type="text" class="form-control mb-2" name="last_name" placeholder="Last Name">
+
+                            <input type="email" class="form-control mb-2" name="email" placeholder="Email">
+
+                            <input type="password" class="form-control mb-2" name="password1" placeholder="Password">
+
+                            <input type="password" class="form-control mb-2" name="password2" placeholder="Confirm Password">
+
+                            <button type="submit" class="btn btn-success w-100">Sign Up</button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+{% endblock body %}

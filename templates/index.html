@@ -1,0 +1,159 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block title %} Hotel Booking {% endblock title %}
+
+{% block body %}
+
+<!-- Booking Section -->
+<section class="bg-light py-5">
+  <div class="container">
+
+    <div class="card shadow-sm border-0 p-4">
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+          <!-- Location -->
+          <div class="col-lg-3">
+            <label class="form-label fw-semibold">Location</label>
+            <select class="form-select form-control" name="search_location" required>
+              <option value="">Select Location</option>
+              {% for location, id in all_location %}
+              <option value="{{ id }}">{{ location }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Check In -->
+          <div class="col-lg-2">
+            <label class="form-label fw-semibold">Check In</label>
+            <input type="date"
+              class="form-control"
+              name="cin"
+              min="{% todays_date %}"
+              max="{% max_date %}"
+              required>
+          </div>
+
+          <!-- Check Out -->
+          <div class="col-lg-2">
+            <label class="form-label fw-semibold">Check Out</label>
+            <input type="date"
+              class="form-control"
+              name="cout"
+              min="{% tommorow %}"
+              max="{% max_date %}"
+              required>
+          </div>
+
+          <!-- Capacity -->
+          <div class="col-lg-2">
+            <label class="form-label fw-semibold">Persons</label>
+            <input type="number"
+              class="form-control"
+              name="capacity"
+              min="1"
+              required>
+          </div>
+
+          <!-- Button -->
+          <div class="col-lg-3 d-grid ">
+            <label class="form-label invisible">Search</label>
+            <button type="submit" class="btn btn-primary w-100">
+              Search Rooms
+            </button>
+          </div>
+
+        </div>
+
+        {% if rooms %}
+        <div class="alert alert-success text-center mt-3 mb-0">
+          Rooms Available ✅
+        </div>
+        {% endif %}
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Rooms Section -->
+<div class="container py-5">
+
+  {% if rooms %}
+  <div class="row g-4">
+
+    {% for r in rooms %}
+<div class="col-lg-4 col-md-6">
+
+  <div class="card h-100 shadow-sm border">
+
+    <!-- Image -->
+    <a href="{% url 'viewroom' r.id %}">
+      {% if r.image %}
+      <img src="{{ r.image.url }}"
+           class="card-img-top"
+           style="height:220px; object-fit:cover;">
+      {% else %}
+      <img src="{% static 'images/hotel.avif' %}"
+           class="card-img-top"
+           style="height:220px; object-fit:cover;">
+      {% endif %}
+    </a>
+
+    <!-- Content -->
+    <div class="card-body d-flex flex-column">
+
+      <h5 class="card-title text-primary fw-bold mb-1">
+        {{ r.get_room_type_display }}
+      </h5>
+
+      <p class="fw-semibold mb-0">
+        {{ r.hotel.name }}
+      </p>
+
+      <p class="text-muted mb-2">
+        📍 {{ r.hotel.location }}
+      </p>
+
+      <p class="mb-2">
+        <span class="badge bg-secondary text-light">
+          👤 {{ r.capacity }} Persons
+        </span>
+      </p>
+
+      <h5 class="text-success fw-bold mb-3">
+        ₹ {{ r.price }}
+      </h5>
+
+      <div class="mt-auto">
+        <a href="{% url 'bookroompage' %}?roomid={{ r.id }}"
+           class="btn btn-outline-primary w-100">
+          Book Now
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endfor %}
+
+  </div>
+
+  {% else %}
+  <div class="text-center py-5">
+    <h5 class="text-danger">No rooms found ❌</h5>
+    <p class="text-muted">Try changing filters</p>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock body %}
