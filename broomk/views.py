@@ -16,24 +16,48 @@ def homepage(request):
         cin = request.POST.get('cin')
         cout = request.POST.get('cout')
 
-        if hotel_id and capacity and cin and cout:
+        # ✅ Validate inputs
+        if not (hotel_id and capacity and cin and cout):
+            messages.error(request, "Please fill all fields")
+            return redirect('home')
+
+        try:
             capacity = int(capacity)
-            cin = datetime.datetime.strptime(cin, "%Y-%m-%d").date()
-            cout = datetime.datetime.strptime(cout, "%Y-%m-%d").date()
+            cin = datetime.strptime(cin, "%Y-%m-%d").date()
+            cout = datetime.strptime(cout, "%Y-%m-%d").date()
+        except:
+            messages.error(request, "Invalid input")
+            return redirect('home')
 
+        # ✅ Date validation
+        if cin >= cout:
+            messages.error(request, "Check-out must be after check-in")
+            return redirect('home')
+
+        # ✅ Get hotel safely
+        try:
             hotel = Hotels.objects.get(id=hotel_id)
+        except Hotels.DoesNotExist:
+            messages.error(request, "Invalid location selected")
+            return redirect('home')
 
-            reserved = Reservation.objects.filter(
-                room__hotel=hotel,
-                check_in__lt=cout,
-                check_out__gt=cin
-            ).values_list('room_id', flat=True)
+        # ✅ Find reserved rooms
+        reserved_rooms = Reservation.objects.filter(
+            room__hotel=hotel,
+            check_in__lt=cout,
+            check_out__gt=cin
+        ).values_list('room_id', flat=True)
 
-            rooms = Rooms.objects.filter(
-                hotel=hotel,
-                capacity=capacity,
-                status="available"
-            ).exclude(id__in=reserved)
+        # ✅ Filter available rooms (REAL LOGIC)
+        rooms = Rooms.objects.filter(
+            hotel=hotel,
+            capacity__gte=capacity,   # 🔥 IMPORTANT CHANGE
+            status="available"
+        ).exclude(id__in=reserved_rooms)
+
+        # ✅ If no rooms
+        if not rooms.exists():
+            messages.warning(request, "No rooms available for selected dates")
 
     return render(request, 'index.html', {
         'rooms': rooms,
@@ -46,9 +70,13 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        if not username or not password:
+            messages.error(request, "Please enter username and password")
+            return redirect('login')
+
         user = authenticate(username=username, password=password)
-        print(user)
-        if user:
+
+        if user is not None:
             login(request, user)
             return redirect('home')
         else:

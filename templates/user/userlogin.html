@@ -4,97 +4,170 @@
 
 {% block body %}
 
-<div class="container py-5">
+<div class="container-fluid vh-100">
+  <div class="row h-100">
 
-    <section>
-        <div class="card w-50 mx-auto shadow">
+    <!-- LEFT SIDE (IMAGE / BRANDING) -->
+    <div class="col-lg-6 d-none d-lg-block login-bg">
+      <div class="overlay d-flex flex-column justify-content-center align-items-center text-white">
+        <h1 class="fw-bold">Welcome Back</h1>
+        <p class="lead">Book your perfect stay with ease</p>
+      </div>
+    </div>
 
-            <!-- Tabs -->
-            <div class="card-header bg-light">
-                <ul class="nav nav-tabs justify-content-center">
+    <!-- RIGHT SIDE (FORM) -->
+    <div class="col-lg-6 d-flex align-items-center justify-content-center">
 
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#login">Login</a>
-                    </li>
+      <div class="card login-card shadow-lg border-0 p-4">
 
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#signup">Signup</a>
-                    </li>
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3 justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#signup">Signup</a>
+          </li>
+        </ul>
 
-                </ul>
+        <!-- Messages -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-warning text-center py-2">
+              {{ message }}
             </div>
+          {% endfor %}
+        {% endif %}
 
-            <div class="card-body">
+        <div class="tab-content">
 
-                <!-- Django Messages -->
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
+          <!-- LOGIN -->
+          <div class="tab-pane fade show active" id="login">
 
-                <div class="tab-content">
+            <h4 class="text-center mb-3">Login to your account</h4>
 
-                    <!-- LOGIN -->
-                    <div id="login" class="tab-pane fade show active">
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
 
-                        <p class="text-center">User Login Form</p>
+              <div class="mb-3">
+                <input type="text" class="form-control input-style"
+                  name="username" placeholder="👤 Username" required>
+              </div>
 
-                        <form action="{% url 'login' %}" method="post">
-                            {% csrf_token %}
+              <div class="mb-3">
+                <input type="password" class="form-control input-style"
+                  name="password" placeholder="🔒 Password" required>
+              </div>
 
-                            <div class="mb-3">
-                                <label>Username</label>
-                                <input type="text" class="form-control" name="username" placeholder="Enter username">
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Enter password">
-                            </div>
-
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox">
-                                <label class="form-check-label">Remember me</label>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100">Login</button>
-                        </form>
-
-                    </div>
-
-                    <!-- SIGNUP -->
-                    <div id="signup" class="tab-pane fade">
-
-                        <p class="text-center">User Signup Form</p>
-
-                        <form action="{% url 'signup' %}" method="post">
-                            {% csrf_token %}
-
-                            <input type="text" class="form-control mb-2" name="username" placeholder="Username">
-
-                            <input type="text" class="form-control mb-2" name="first_name" placeholder="First Name">
-
-                            <input type="text" class="form-control mb-2" name="last_name" placeholder="Last Name">
-
-                            <input type="email" class="form-control mb-2" name="email" placeholder="Email">
-
-                            <input type="password" class="form-control mb-2" name="password1" placeholder="Password">
-
-                            <input type="password" class="form-control mb-2" name="password2" placeholder="Confirm Password">
-
-                            <button type="submit" class="btn btn-success w-100">Sign Up</button>
-
-                        </form>
-
-                    </div>
-
+              <div class="d-flex justify-content-between mb-3">
+                <div>
+                  <input type="checkbox"> Remember
                 </div>
-            </div>
+                <a href="#" class="small text-decoration-none">Forgot password?</a>
+              </div>
+
+              <button class="btn btn-dark w-100 py-2 fw-semibold">
+                Login
+              </button>
+
+            </form>
+          </div>
+
+          <!-- SIGNUP -->
+          <div class="tab-pane fade" id="signup">
+
+            <h4 class="text-center mb-3">Create new account</h4>
+
+            <form method="POST" action="{% url 'signup' %}">
+              {% csrf_token %}
+
+              <input type="text" class="form-control input-style mb-2"
+                name="username" placeholder="👤 Username" required>
+
+              <input type="text" class="form-control input-style mb-2"
+                name="first_name" placeholder="First Name">
+
+              <input type="text" class="form-control input-style mb-2"
+                name="last_name" placeholder="Last Name">
+
+              <input type="email" class="form-control input-style mb-2"
+                name="email" placeholder="📧 Email">
+
+              <input type="password" class="form-control input-style mb-2"
+                name="password1" placeholder="🔒 Password" required>
+
+              <input type="password" class="form-control input-style mb-3"
+                name="password2" placeholder="🔒 Confirm Password" required>
+
+              <button class="btn btn-warning w-100 py-2 fw-semibold">
+                Sign Up
+              </button>
+
+            </form>
+
+          </div>
 
         </div>
-    </section>
 
+      </div>
+
+    </div>
+
+  </div>
 </div>
+
+
+<!-- CSS -->
+<style>
+
+/* LEFT IMAGE */
+.login-bg {
+  background: url("/static/images/banner1.avif") no-repeat center center/cover;
+  position: relative;
+}
+
+.overlay {
+  background: rgba(0,0,0,0.6);
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+/* CARD */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+}
+
+/* INPUT */
+.input-style {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.input-style:focus {
+  border-color: #000;
+  box-shadow: none;
+}
+
+/* TABS */
+.nav-tabs .nav-link.active {
+  border-bottom: 3px solid #000;
+  font-weight: bold;
+}
+
+/* BUTTON HOVER */
+.btn-dark:hover {
+  background: #333;
+}
+
+.btn-warning:hover {
+  background: #e6ac00;
+}
+
+</style>
 
 {% endblock body %}

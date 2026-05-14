@@ -6,11 +6,18 @@
 
 {% block body %}
 
-<!-- Booking Section -->
-<section class="bg-light py-5">
-  <div class="container">
+<!-- HERO SECTION -->
+<section class="hero-section d-flex align-items-center w-100">
+  <div class="container text-center text-white">
 
-    <div class="card shadow-sm border-0 p-4">
+    <h1 class="fw-bold display-5 mb-3">
+      Find Your Perfect Stay
+    </h1>
+    <p class="mb-4">Luxury rooms at the best prices</p>
+
+    <!-- SEARCH BOX -->
+    <div class="search-box mx-auto p-4 rounded-4 shadow">
+
       <form method="POST">
         {% csrf_token %}
 
@@ -18,9 +25,8 @@
 
           <!-- Location -->
           <div class="col-lg-3">
-            <label class="form-label fw-semibold">Location</label>
-            <select class="form-select form-control" name="search_location" required>
-              <option value="">Select Location</option>
+            <select class="form-select" name="search_location" required>
+              <option value=""> Location</option>
               {% for location, id in all_location %}
               <option value="{{ id }}">{{ location }}</option>
               {% endfor %}
@@ -29,131 +35,189 @@
 
           <!-- Check In -->
           <div class="col-lg-2">
-            <label class="form-label fw-semibold">Check In</label>
-            <input type="date"
-              class="form-control"
+            <input type="date" class="form-control"
               name="cin"
               min="{% todays_date %}"
-              max="{% max_date %}"
-              required>
+              max="{% max_date %}" required>
           </div>
 
           <!-- Check Out -->
           <div class="col-lg-2">
-            <label class="form-label fw-semibold">Check Out</label>
-            <input type="date"
-              class="form-control"
+            <input type="date" class="form-control"
               name="cout"
               min="{% tommorow %}"
-              max="{% max_date %}"
-              required>
+              max="{% max_date %}" required>
           </div>
 
-          <!-- Capacity -->
+          <!-- Guests -->
           <div class="col-lg-2">
-            <label class="form-label fw-semibold">Persons</label>
-            <input type="number"
-              class="form-control"
+            <input type="number" class="form-control"
               name="capacity"
-              min="1"
-              required>
+              placeholder=" Guests"
+              min="1" required>
           </div>
 
           <!-- Button -->
-          <div class="col-lg-3 d-grid ">
-            <label class="form-label invisible">Search</label>
-            <button type="submit" class="btn btn-primary w-100">
-              Search Rooms
+          <div class="col-lg-3 d-grid">
+            <button type="submit" class="btn btn-warning fw-bold">
+              Search
             </button>
           </div>
 
         </div>
 
-        {% if rooms %}
-        <div class="alert alert-success text-center mt-3 mb-0">
-          Rooms Available ✅
-        </div>
-        {% endif %}
-
       </form>
+
     </div>
 
   </div>
 </section>
 
 
-<!-- Rooms Section -->
+<!-- ROOMS SECTION -->
 <div class="container py-5">
 
   {% if rooms %}
+  <h3 class="fw-bold mb-4">Available Rooms</h3>
+
   <div class="row g-4">
 
     {% for r in rooms %}
-<div class="col-lg-4 col-md-6">
+    <div class="col-lg-4 col-md-6">
 
-  <div class="card h-100 shadow-sm border">
+      <div class="hotel-card">
 
-    <!-- Image -->
-    <a href="{% url 'room_details' r.id %}">
-      {% if r.image %}
-      <img src="{{ r.image.url }}"
-           class="card-img-top"
-           style="height:220px; object-fit:cover;">
-      {% else %}
-      <img src="{% static 'images/hotel.avif' %}"
-           class="card-img-top"
-           style="height:220px; object-fit:cover;">
-      {% endif %}
-    </a>
+        <!-- Image -->
+        <div class="hotel-img">
+          <a href="{% url 'room_details' r.id %}">
+            {% if r.image %}
+            <img src="{{ r.image.url }}">
+            {% else %}
+            <img src="{% static 'images/hotel.avif' %}">
+            {% endif %}
+          </a>
+          <span class="price">₹ {{ r.price }}</span>
+        </div>
 
-    <!-- Content -->
-    <div class="card-body d-flex flex-column">
+        <!-- Content -->
+        <div class="hotel-content">
 
-      <h5 class="card-title text-primary fw-bold mb-1">
-        {{ r.get_room_type_display }}
-      </h5>
+          <h5>{{ r.hotel.name }}</h5>
 
-      <p class="fw-semibold mb-0">
-        {{ r.hotel.name }}
-      </p>
+          <p class="location">
+            {{ r.hotel.location }}
+          </p>
 
-      <p class="text-muted mb-2">
-        📍 {{ r.hotel.location }}
-      </p>
+          <p class="room-type">
+            {{ r.get_room_type_display }} • {{ r.capacity }} Guests
+          </p>
 
-      <p class="mb-2">
-        <span class="badge bg-secondary text-light">
-          👤 {{ r.capacity }} Persons
-        </span>
-      </p>
+          <a href="{% url 'bookroompage' %}?roomid={{ r.id }}"
+             class="btn btn-dark w-100">
+            View & Book
+          </a>
 
-      <h5 class="text-success fw-bold mb-3">
-        ₹ {{ r.price }}
-      </h5>
+        </div>
 
-      <div class="mt-auto">
-        <a href="{% url 'bookroompage' %}?roomid={{ r.id }}"
-           class="btn btn-outline-primary w-100">
-          Book Now
-        </a>
       </div>
 
     </div>
-
-  </div>
-
-</div>
-{% endfor %}
+    {% endfor %}
 
   </div>
 
   {% else %}
   <div class="text-center py-5">
-    <h5 class="text-danger">No rooms found ❌</h5>
+    <h5 class="text-danger">No rooms found </h5>
     <p class="text-muted">Try changing filters</p>
   </div>
   {% endif %}
 
 </div>
+
+
+<!-- CUSTOM CSS -->
+<style>
+
+/* HERO SECTION */
+.hero-section {
+  height: 80vh;
+  background: url("{% static 'images/banner.avif' %}") no-repeat center center/cover;
+  position: relative;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* SEARCH BOX */
+.search-box {
+  background: #fff;
+  max-width: 900px;
+}
+
+/* HOTEL CARD */
+.hotel-card {
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.hotel-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.hotel-img {
+  position: relative;
+}
+
+.hotel-img img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.price {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.hotel-content {
+  padding: 15px;
+}
+
+.hotel-content h5 {
+  font-weight: bold;
+}
+
+.location {
+  color: gray;
+  font-size: 14px;
+}
+
+.room-type {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+</style>
 
 {% endblock body %}
